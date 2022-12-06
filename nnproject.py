@@ -9,7 +9,7 @@ import os
 import datetime
 from model import TrainNASNet
 
-device = torch.device('cuda')
+device = torch.device('mps')
 data_path = 'CIFAR-10'
 
 cifar10 = datasets.CIFAR10(data_path, train=True, download=True, transform=transforms.Compose([
@@ -23,9 +23,9 @@ cifar10 = datasets.CIFAR10(data_path, train=True, download=True, transform=trans
 train_loader = DataLoader(cifar10, batch_size=32, shuffle=True)
 
 model = TrainNASNet(device=device, N=4, L=8, C=32)
-if os.path.exists('nnproject.pt'):
+if os.path.exists('nnproject20.pt'):
     model.load_state_dict(torch.load(
-        'nnproject.pt', map_location=torch.device('cpu')))  # why?
+        'nnproject20.pt', map_location=torch.device('cpu')))  # why?
 model.to(device=device)
 optimizer = optim.SGD(params=model.parameters(), lr=1e-2)
 loss_fn = nn.CrossEntropyLoss()
@@ -49,7 +49,7 @@ def storeGraph(names, N=4):
     fp.close()
 
 img_no = 0
-q = 0
+q = 0 # By controlling q, you can run training for TrainNASNet or NASNet.
 prev_names = []
 print(f"Model has been translated to {device}")
 for epoch in range(0, 80):
@@ -57,17 +57,16 @@ for epoch in range(0, 80):
         batch_size = imgs.shape[0]
         imgs = imgs.to(device=device)
         labels = labels.to(device=device)
+        idxs = torch.argmax(model.alphas[0], dim=1)
+        names = list(map(lambda x: OPNAMES[x], idxs))
+        if prev_names != names:
+            prev_names = names
+            storeGraph(names)
+            print(names)
+            if img_no % 10 == 0:
+                os.system('dot visual.dot -T png > visualO{}.png'.format(img_no))
+            img_no += 1
         if q == 0:
-            idxs = torch.argmax(model.alphas[0], dim=1)
-            names = list(map(lambda x: OPNAMES[x], idxs))
-            if prev_names != names:
-                prev_names = names
-                storeGraph(names)
-                print(names)
-                if img_no % 10 == 0:
-                    os.system('dot visual.dot -T png > visualO{}.png'.format(img_no))
-                img_no += 1
-
             out = model(imgs)
             loss = loss_fn(out, labels)
             optimizer.zero_grad()
@@ -86,5 +85,7 @@ for epoch in range(0, 80):
     if epoch % 20 == 0 and epoch != 0:
         torch.save(model.state_dict(), 'nnproject' +
                    str(epoch) + '.pt')  # backup
+        torch.save(model.alphas, 'alphas{}.pt'.format(epoch))
 
 torch.save(model.state_dict(), 'nnproject.pt')
+torch.save(model.alphas, 'alphas.pt')
