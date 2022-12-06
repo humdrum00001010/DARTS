@@ -8,10 +8,8 @@ from torch.utils.data import DataLoader
 import os
 import datetime
 from model import TrainNASNet
-import graphviz
-from IPython.display import display
 
-device = torch.device('cuda')
+device = torch.device('mps')
 data_path = 'CIFAR-10'
 
 cifar10 = datasets.CIFAR10(data_path, train=True, download=True, transform=transforms.Compose([

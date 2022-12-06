@@ -1,0 +1,12 @@
+CIFAR-10/cifar-10-python.tar.gz
+CIFAR-10/cifar-10-batches-py/batches.meta
+__pycache__/darts.cpython-310.pyc
+__pycache__/model.cpython-310.pyc
+__pycache__/operations.cpython-310.pyc
+CIFAR-10/cifar-10-batches-py/data_batch_1
+CIFAR-10/cifar-10-batches-py/data_batch_2
+CIFAR-10/cifar-10-batches-py/data_batch_3
+CIFAR-10/cifar-10-batches-py/data_batch_4
+CIFAR-10/cifar-10-batches-py/data_batch_5
+CIFAR-10/cifar-10-batches-py/readme.html
+CIFAR-10/cifar-10-batches-py/test_batch

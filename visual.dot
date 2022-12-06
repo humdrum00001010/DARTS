@@ -1,0 +1,21 @@
+digraph {
+	"k-2"->"0"[label="dil3x3"];
+	"k-1"->"0"[label="sep3x3"];
+	"0"->"concat";
+	"k-2"->"1"[label="sep3x3"];
+	"k-1"->"1"[label="sep5x5"];
+	"0"->"1"[label="sep3x3"];
+	"1"->"concat";
+	"k-2"->"2"[label="dil3x3"];
+	"k-1"->"2"[label="dil5x5"];
+	"0"->"2"[label="dil3x3"];
+	"1"->"2"[label="sep5x5"];
+	"2"->"concat";
+	"k-2"->"3"[label="sep5x5"];
+	"k-1"->"3"[label="dil5x5"];
+	"0"->"3"[label="dil5x5"];
+	"1"->"3"[label="sep3x3"];
+	"2"->"3"[label="dil3x3"];
+	"3"->"concat";
+	"concat"->"k";
+}
