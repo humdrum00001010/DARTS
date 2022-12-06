@@ -9,7 +9,7 @@ import os
 import datetime
 from model import TrainNASNet
 
-device = torch.device('mps')
+device = torch.device('cuda')
 data_path = 'CIFAR-10'
 
 cifar10 = datasets.CIFAR10(data_path, train=True, download=True, transform=transforms.Compose([
