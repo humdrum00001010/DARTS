@@ -83,8 +83,7 @@ for epoch in range(0, 80):
     print("{}: Epoch: {}, Loss: {}".format(
         datetime.datetime.now(), epoch, loss))
     if epoch % 20 == 0 and epoch != 0:
-        torch.save(model.state_dict(), 'nnproject' +
-                   str(epoch) + '.pt')  # backup
+        torch.save(model.state_dict(), 'nnproject{}.pt'.format(epoch))  # backup
         torch.save(model.alphas, 'alphas{}.pt'.format(epoch))
 
 torch.save(model.state_dict(), 'nnproject.pt')
